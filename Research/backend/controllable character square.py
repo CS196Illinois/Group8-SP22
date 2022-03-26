@@ -7,17 +7,18 @@ pygame.init()
 
 colorWHITE = (255,255,255)
 colorBLACK = (0, 0, 0)
-colorRED = (255, 0, 0)
+colorGRAY = (121, 121, 121)
 
 # window dimensions
-gameWindow = pygame.display.set_mode((500,500))
+# formula x dimension: block size * number of blocks + gap size * (# of blocks + 1) + symmetrical padding of even # * blocks
+gameWindow = pygame.display.set_mode((624,728))
 
 pygame.display.set_caption('animated character template')
 
 gameQuit = False
-# starting position on maze, use rand import here
-move_x = 300
-move_y = 300
+# starting position on maze, top left square is: padding + 0.5 * (block len - character len)
+move_x = 109
+move_y = 109
 
 # game loop
 
@@ -36,18 +37,22 @@ while not gameQuit:
         # movement
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                move_x -= 60
+                move_x -= 52
             if event.key == pygame.K_RIGHT:
-                move_x += 60
+                move_x += 52
             if event.key == pygame.K_UP:
-                move_y -= 60
+                move_y -= 52
             if event.key == pygame.K_DOWN:
-                move_y += 60
+                move_y += 52
 
     # make window white
-    gameWindow.fill(colorWHITE)
+    gameWindow.fill(colorBLACK)
+    for y in range(2, 12):
+        for x in range(2, 10):
+            rect = pygame.Rect(x * 52, y * 52, 50, 50)
+            pygame.draw.rect(gameWindow, colorWHITE, rect)
 
     # make black rectangle object
-    pygame.draw.rect(gameWindow, colorBLACK, [move_x, move_y, 50, 50])
+    pygame.draw.rect(gameWindow, colorGRAY, [move_x, move_y, 40, 40])
 
     pygame.display.update()            
