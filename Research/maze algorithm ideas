@@ -1,0 +1,8 @@
+"blockwise rendering"
+https://weblog.jamisbuck.org/2015/10/31/mazes-blockwise-geometry.html
+
+strict blockwise maze has an odd number of rows and columns, only treat blocks at odd numbered rows and columns as actual cells
+
+identify path
+no complete encapsulation
+...
