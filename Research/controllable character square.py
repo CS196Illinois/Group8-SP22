@@ -16,9 +16,12 @@ gameWindow = pygame.display.set_mode((624,728))
 pygame.display.set_caption('animated character template')
 
 gameQuit = False
-# starting position on maze, top left square is: padding + 0.5 * (block len - character len)
+
+# character starting position on maze, top left square is: padding + 0.5 * (block len - character len)
 move_x = 109
 move_y = 109
+
+# walls will be in the following order (^ = 1), (-> = 2), (v = 3), (<- = 4)
 
 # game loop
 
@@ -36,13 +39,13 @@ while not gameQuit:
                 sys.exit()
         # movement
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
+            if event.key == pygame.K_LEFT and gameWindow.get_at((move_x - 6, move_y)) == colorWHITE: #tests if theres a wall to the left of the rect
                 move_x -= 52
-            if event.key == pygame.K_RIGHT:
+            if event.key == pygame.K_RIGHT and gameWindow.get_at((move_x + 46, move_y)) == colorWHITE:    
                 move_x += 52
-            if event.key == pygame.K_UP:
+            if event.key == pygame.K_UP and gameWindow.get_at((move_x, move_y + 6)) == colorWHITE:
                 move_y -= 52
-            if event.key == pygame.K_DOWN:
+            if event.key == pygame.K_DOWN and gameWindow.get_at((move_x, move_y - 46)) == colorWHITE:
                 move_y += 52
 
     # make window white
@@ -52,7 +55,7 @@ while not gameQuit:
             rect = pygame.Rect(x * 52, y * 52, 50, 50)
             pygame.draw.rect(gameWindow, colorWHITE, rect)
 
-    # make black rectangle object
+    # make gray rectangle object
     pygame.draw.rect(gameWindow, colorGRAY, [move_x, move_y, 40, 40])
 
     pygame.display.update()            
