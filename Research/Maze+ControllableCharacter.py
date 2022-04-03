@@ -234,7 +234,7 @@ while not gameQuit:
                 move_y += 50
                 move_count += 1
 
-    # make gray rectangle object
+    # make gray rectangle object + flower objects
     pygame.draw.rect(screen, colorGRAY, [move_x, move_y, 41, 41])
 
     pygame.draw.rect(screen, 'Blue', [(pickup1_x), (pickup1_y), 20, 20])
@@ -242,4 +242,5 @@ while not gameQuit:
     pygame.draw.rect(screen, 'Red', [(pickup3_x), (pickup3_y), 20, 20])
     pygame.draw.rect(screen, 'Red', [(pickup4_x), (pickup4_y), 20, 20]) 
     
+
     pygame.display.flip()           
