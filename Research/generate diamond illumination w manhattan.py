@@ -25,6 +25,8 @@ width = 50
 move_x = 109
 move_y = 109
 
+location = (move_x, move_y)
+
 # game loop
 
 while not gameQuit:
@@ -50,13 +52,17 @@ while not gameQuit:
             if event.key == pygame.K_DOWN:
                 move_y += 52
 
-# create a black square for every cell on the board except at a certain cell
+    # check and update location of mc:
+
+
+    # create a black square for every cell on the board except at a certain cell
 
     screen.fill(colorWHITE)
 
     for x in range(0, size[0]//width):
         for y in range(0, size[1]//width):
-            rect = pygame.Rect(x * 52, y * 52, 50, 50)
+            loc_dark100 = ()
+            rect = pygame.Rect(x * 52, y * 52, 51, 51)
             pygame.draw.rect(screen, colorBLACK, rect)
 
     pygame.display.update()

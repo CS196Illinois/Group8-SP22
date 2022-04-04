@@ -190,19 +190,21 @@ move_count = 0
 move_x = 5
 move_y = 5
 
+location = (move_x, move_y)
+
 # "pick-up" locations
 
-pickup1_x = (50 * random.randint(0, 13)) + 15
-pickup1_y = (50 * random.randint(0, 13)) + 15
+pickup1_x = (50 * random.randint(0, rows - 1)) + 15
+pickup1_y = (50 * random.randint(0, cols - 1)) + 15
 
-pickup2_x = (50 * random.randint(0, 13)) + 15
-pickup2_y = (50 * random.randint(0, 13)) + 15
+pickup2_x = (50 * random.randint(0, rows - 1)) + 15
+pickup2_y = (50 * random.randint(0, cols - 1)) + 15
 
-pickup3_x = (50 * random.randint(0, 13)) + 15
-pickup3_y = (50 * random.randint(0, 13)) + 15
+pickup3_x = (50 * random.randint(0, rows - 1)) + 15
+pickup3_y = (50 * random.randint(0, cols - 1)) + 15
 
-pickup4_x = (50 * random.randint(0, 13)) + 15
-pickup4_y = (50 * random.randint(0, 13)) + 15
+pickup4_x = (50 * random.randint(0, rows - 1)) + 15
+pickup4_y = (50 * random.randint(0, cols - 1)) + 15
 
 # makes sure the pickups dont start on the player's starting position
 if pickup1_x + pickup1_y == 30:
@@ -277,5 +279,6 @@ while not gameQuit:
     if getBlue == True and getRed == True and getGreen == True and getPurple == True and gameWon == False:
         gameWon == True
         print("YOU WON! Final step count: " + str(move_count))
-
+        exit()
+        
     pygame.display.flip()           
