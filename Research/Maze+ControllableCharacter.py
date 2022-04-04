@@ -177,6 +177,7 @@ colorGRAY = (121, 121, 121)
 pygame.display.set_caption('Maze Game')
 
 gameQuit = False
+gameWon = False
 
 getBlue = False
 getRed = False
@@ -233,22 +234,18 @@ while not gameQuit:
                 pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
                 move_x -= 50
                 move_count += 1
-                print(move_count)
             if event.key == pygame.K_RIGHT and screen.get_at((move_x + 45, move_y)) == colorWHITE:   
                 pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41]) 
                 move_x += 50
                 move_count += 1
-                print(move_count)
             if event.key == pygame.K_UP and screen.get_at((move_x, move_y - 5)) == colorWHITE:
                 pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
                 move_y -= 50
                 move_count += 1
-                print(move_count)
             if event.key == pygame.K_DOWN and screen.get_at((move_x, move_y + 45)) == colorWHITE:
                 pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
                 move_y += 50
                 move_count += 1
-                print(move_count)
 
     # make gray rectangle object
     pygame.draw.rect(screen, colorGRAY, [move_x, move_y, 41, 41])
@@ -276,5 +273,9 @@ while not gameQuit:
         pygame.draw.rect(screen, 'Green', [(pickup3_x), (pickup3_y), 20, 20])
     if getPurple == False:
         pygame.draw.rect(screen, 'Purple', [(pickup4_x), (pickup4_y), 20, 20])
+
+    if getBlue == True and getRed == True and getGreen == True and getPurple == True and gameWon == False:
+        gameWon == True
+        print("YOU WON! Final step count: " + str(move_count))
 
     pygame.display.flip()           
