@@ -178,6 +178,11 @@ pygame.display.set_caption('Maze Game')
 
 gameQuit = False
 
+getBlue = False
+getRed = False
+getGreen = False
+getPurple = False
+
 move_count = 0
 
 # character starting position on maze
@@ -198,8 +203,15 @@ pickup3_y = (50 * random.randint(0, 13)) + 15
 pickup4_x = (50 * random.randint(0, 13)) + 15
 pickup4_y = (50 * random.randint(0, 13)) + 15
 
- # HERE ____----------------------
-    
+# makes sure the pickups dont start on the player's starting position
+if pickup1_x + pickup1_y == 30:
+    pickup1_x += 50
+if pickup2_x + pickup2_y == 30:
+    pickup2_y += 50
+if pickup3_x + pickup3_y == 30:
+    pickup3_x += 50
+if pickup4_x + pickup4_y == 30:
+    pickup4_y += 50
     
 # game loop
 
@@ -221,26 +233,48 @@ while not gameQuit:
                 pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
                 move_x -= 50
                 move_count += 1
+                print(move_count)
             if event.key == pygame.K_RIGHT and screen.get_at((move_x + 45, move_y)) == colorWHITE:   
                 pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41]) 
                 move_x += 50
                 move_count += 1
+                print(move_count)
             if event.key == pygame.K_UP and screen.get_at((move_x, move_y - 5)) == colorWHITE:
                 pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
                 move_y -= 50
                 move_count += 1
+                print(move_count)
             if event.key == pygame.K_DOWN and screen.get_at((move_x, move_y + 45)) == colorWHITE:
                 pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
                 move_y += 50
                 move_count += 1
+                print(move_count)
 
-    # make gray rectangle object + flower objects
+    # make gray rectangle object
     pygame.draw.rect(screen, colorGRAY, [move_x, move_y, 41, 41])
 
-    pygame.draw.rect(screen, 'Blue', [(pickup1_x), (pickup1_y), 20, 20])
-    pygame.draw.rect(screen, 'Red', [(pickup2_x), (pickup2_y), 20, 20])
-    pygame.draw.rect(screen, 'Red', [(pickup3_x), (pickup3_y), 20, 20])
-    pygame.draw.rect(screen, 'Red', [(pickup4_x), (pickup4_y), 20, 20]) 
-    
+    # test if flowers were picked up
+    if pickup1_x - move_x == 10 and pickup1_y - move_y == 10 and getBlue == False:
+        print("GOT BLUE")
+        getBlue = True
+    if pickup2_x - move_x == 10 and pickup2_y - move_y == 10 and getRed == False:
+        print("GOT RED")
+        getRed = True
+    if pickup3_x - move_x == 10 and pickup3_y - move_y == 10 and getGreen == False:
+        print("GOT GREEN")
+        getGreen = True
+    if pickup4_x - move_x == 10 and pickup4_y - move_y == 10 and getPurple == False:
+        print("GOT PURPLE")
+        getPurple = True
+
+    # If flowers were not picked up, draw the flowers
+    if getBlue == False:
+        pygame.draw.rect(screen, 'Blue', [(pickup1_x), (pickup1_y), 20, 20])
+    if getRed == False:
+        pygame.draw.rect(screen, 'Red', [(pickup2_x), (pickup2_y), 20, 20])
+    if getGreen == False:
+        pygame.draw.rect(screen, 'Green', [(pickup3_x), (pickup3_y), 20, 20])
+    if getPurple == False:
+        pygame.draw.rect(screen, 'Purple', [(pickup4_x), (pickup4_y), 20, 20])
 
     pygame.display.flip()           
