@@ -54,7 +54,6 @@ while not gameQuit:
 
     # check and update location of mc:
     loc_mc = (move_x//52, move_y//52)
-    print(loc_mc)
 
     # create a black square for every cell on the board except at a certain cell
 
