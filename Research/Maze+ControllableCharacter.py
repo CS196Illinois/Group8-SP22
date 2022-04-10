@@ -2,6 +2,7 @@ from operator import truediv
 import random
 import pygame
 import sys
+import math
 pygame.init()
 
 WHITE = (255,255,255)
@@ -248,6 +249,40 @@ while not gameQuit:
                 pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
                 move_y += 50
                 move_count += 1
+
+                        # check and update location of mc:
+    loc_mc = (move_x//52, move_y//52)
+
+    # create a black square for every cell on the board except at a certain cell
+
+    screen.fill(colorWHITE)
+
+    cell_loc = []
+
+    # populate coordinates in separate loop
+    
+    for x in range(0, size[0]//width):
+        for y in range(0, size[1]//width):
+            cell_loc.append((x,y))
+
+    # print(cell_loc)
+
+    # draw rectangles
+
+    for item in cell_loc:
+        x = item[0]
+        y = item[1]
+        dx = abs(loc_mc[0]-x)
+        dy = abs(loc_mc[1]-y)
+        distance = math.sqrt(dx*dx + dy*dy)
+        opacity = int((255.0 * (distance) / 3))
+        if (opacity > 255):
+            opacity = 255
+        color = (0, 0, 0)
+        rect = pygame.Surface((51, 51))
+        rect.set_alpha(opacity)
+        rect.fill(color)
+        screen.blit(rect, (x * 52,y * 52))
 
     # make gray rectangle object
     pygame.draw.rect(screen, colorGRAY, [move_x, move_y, 41, 41])
