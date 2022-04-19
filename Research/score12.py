@@ -1,10 +1,11 @@
 import pygame
 from pygame.locals import *
+import math
 
 pygame.init()
 
-screen_width = 864
-screen_height = 936
+screen_width = 400
+screen_height = 400
 
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Score')
@@ -23,8 +24,8 @@ pygame.quit()
 # Score code :
 flowers_pickedup = 0
 
-# Define Font
-font = pygame.font.Font('freeansbold.ttf', 32)
+# Define Font does not work here but works in score.py 
+font = pygame.font.Font('freesansbold.ttf', 32)
 
 # Define Color
 white = (255, 255, 255)
@@ -37,7 +38,7 @@ scoreY = 10
 score = font.render("Score :" + str(flowers_pickedup), True, (white))
 screen.blit(score, (scoreX, scoreY))
 textRect = score.get_rect()
-textRect.center = (scoreX // 2, scoreY // 2)
+textRect.center = (200, 200)
 
 
 

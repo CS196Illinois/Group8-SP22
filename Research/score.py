@@ -1,37 +1,42 @@
-# import pygame module in this program
+#Set Up This can display the score when (all this needs is to be put into the main file then just switch score to interaction data )
 import pygame
 from pygame.locals import *
 import math
 
 pygame.init()
  
-# define the RGB value for white,
-#  green, blue colour .
+#Colors for use
 white = (255, 255, 255)
 green = (0, 255, 0)
 blue = (0, 0, 128)
  
-# assigning values to X and Y variable
-X = 400
-Y = 400
+# Assign location
+scoreX = 400
+scoreY = 400
  
 # create the display surface object
 # of specific dimension..e(X, Y).
-display_surface = pygame.display.set_mode((X, Y))
+display_surface = pygame.display.set_mode((scoreX, scoreY))
  
-# set the pygame window name
-pygame.display.set_caption('Show Text')
+# Pygame window name
+pygame.display.set_caption('Score')
  
 # create a font object.
-# 1st parameter is the font file
+# Remeber: 1st parameter is the font file
 # which is present in pygame.
 # 2nd parameter is size of the font
 font = pygame.font.Font('freesansbold.ttf', 32)
- 
+#score change this when you integrate to maze 
+flowers = 0
+
+#Trying out updating methods
+for x in range(0, 5):
+    flowers = 1 + flowers
+
 # create a text surface object,
-# on which text is drawn on it.
-text = font.render('GeeksForGeeks', True, green, blue)
+text = font.render('Score:' + str(flowers), True, green, blue)
  
+# I think you need the rectangle if you want the text to show up without this step it hasn't worked !
 # create a rectangular object for the
 # text surface object
 textRect = text.get_rect()
@@ -39,7 +44,7 @@ textRect = text.get_rect()
 # set the center of the rectangular object.
 textRect.center = (200, 200)
  
-# infinite loop
+# Sets up window
 while True:
  
     # completely fill the surface object
@@ -48,11 +53,9 @@ while True:
  
     # copying the text surface object
     # to the display surface object
-    # at the center coordinate.
+    # at the center
     display_surface.blit(text, textRect)
  
-    # iterate over the list of Event objects
-    # that was returned by pygame.event.get() method.
     for event in pygame.event.get():
  
         # if event object type is QUIT
