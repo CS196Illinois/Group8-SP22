@@ -11,16 +11,20 @@ BLACK = (0,0,0)
 PURPLE = (100,0,100)
 RED = (255,0,0)
 
-size = (701,701)
+maze_dim = (7, 7)
+cell = 50
+width = 50
+size = (maze_dim[0] * cell, maze_dim[1] * cell)
+
+# size = (701,701)
 screen = pygame.display.set_mode(size)
 
 pygame.display.set_caption("Maze Generator")
 
 done = False
 
-clock = pygame.time.Clock()
+#clock = pygame.time.Clock()
 
-width = 50
 cols = int(size[0] / width)
 rows = int(size[1] / width)
 
@@ -129,7 +133,7 @@ while not done:
             pygame.quit()
             sys.exit()
     
-    screen.fill(GREY)
+    # screen.fill(GREY)
     
     current_cell.visited = True
     current_cell.current = True
@@ -156,7 +160,7 @@ while not done:
         current_cell = stack.pop()
         
     elif len(stack) == 0:
-        print("FULL")
+        #print("FULL")
         done = True
         
         for y in range(rows):
@@ -231,31 +235,36 @@ while not gameQuit:
             if event.key == pygame.K_q or event.key == pygame.K_ESCAPE:
                 pygame.quit()
                 sys.exit()
+
         # movement
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT and screen.get_at((move_x - 5, move_y)) == colorWHITE: #tests if theres a wall to the left of the rect
-                pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
+            if event.key == pygame.K_LEFT and screen.get_at((move_x - 5, move_y)) != colorBLACK: #tests if theres a wall to the left of the rect
+                #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
                 move_x -= 50
                 move_count += 1
-            if event.key == pygame.K_RIGHT and screen.get_at((move_x + 45, move_y)) == colorWHITE:   
-                pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41]) 
+            if event.key == pygame.K_RIGHT and screen.get_at((move_x + 45, move_y)) != colorBLACK:   
+                #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41]) 
                 move_x += 50
                 move_count += 1
-            if event.key == pygame.K_UP and screen.get_at((move_x, move_y - 5)) == colorWHITE:
-                pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
+            if event.key == pygame.K_UP and screen.get_at((move_x, move_y - 5)) != colorBLACK:
+                #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
                 move_y -= 50
                 move_count += 1
-            if event.key == pygame.K_DOWN and screen.get_at((move_x, move_y + 45)) == colorWHITE:
-                pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
+            if event.key == pygame.K_DOWN and screen.get_at((move_x, move_y + 45)) != colorBLACK:
+                #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
                 move_y += 50
                 move_count += 1
 
+    
+    screen.fill(colorWHITE)
+    for y in range(rows):
+        for x in range(cols):
+            grid[y][x].draw()
+
                         # check and update location of mc:
-    loc_mc = (move_x//52, move_y//52)
+    loc_mc = (move_x//50, move_y//50)
 
     # create a black square for every cell on the board except at a certain cell
-
-    screen.fill(colorWHITE)
 
     cell_loc = []
 
@@ -279,10 +288,10 @@ while not gameQuit:
         if (opacity > 255):
             opacity = 255
         color = (0, 0, 0)
-        rect = pygame.Surface((51, 51))
+        rect = pygame.Surface((50, 50))
         rect.set_alpha(opacity)
         rect.fill(color)
-        screen.blit(rect, (x * 52,y * 52))
+        screen.blit(rect, (x * 50,y * 50))
 
     # make gray rectangle object
     pygame.draw.rect(screen, colorGRAY, [move_x, move_y, 41, 41])
