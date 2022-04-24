@@ -5,16 +5,34 @@ import sys
 import math
 pygame.init()
 
+#import sprites
+bg_sprite1 = pygame.image.load("Research/sprites/grass floor 1.png")
+bg_sprite2 = pygame.image.load("Research/sprites/grass floor 2.png")
+bg_sprite3 = pygame.image.load("Research/sprites/grass floor 3.png")
+bg_sprite4 = pygame.image.load("Research/sprites/grass floor 4.png")
+
+bg_set = [bg_sprite1, bg_sprite2, bg_sprite3, bg_sprite4]
+mc_sprite = pygame.image.load("Research/sprites/mc sprite.png")
+fl_sprite = pygame.image.load("Research/sprites/flower sprite.png")
+
 WHITE = (255,255,255)
 GREY = (20,20,20)
 BLACK = (0,0,0)
 PURPLE = (100,0,100)
 RED = (255,0,0)
 
+colorWHITE = (255,255,255)
+colorBLACK = (0, 0, 0)
+colorGRAY = (121, 121, 121)
+colorBG = (222, 211, 184)
+
 maze_dim = (7, 7)
 cell = 50
 width = 50
 size = (maze_dim[0] * cell, maze_dim[1] * cell)
+
+wall_thickness = 3
+wall_color = colorBLACK
 
 # size = (701,701)
 screen = pygame.display.set_mode(size)
@@ -53,16 +71,16 @@ class Cell():
     
     def draw(self):
         if self.visited:
-            pygame.draw.rect(screen,WHITE,(self.x,self.y,width,width))
-        
+            #pygame.draw.rect(screen,colorBG,(self.x,self.y,width,width))
+            screen.blit(bg_set[random.randint(0, 3)], (self.x, self.y))
             if self.walls[0]:
-                pygame.draw.line(screen,BLACK,(self.x,self.y),((self.x + width),self.y),1) # top
+                pygame.draw.line(screen,wall_color,(self.x,self.y),((self.x + width),self.y),wall_thickness) # top
             if self.walls[1]:
-                pygame.draw.line(screen,BLACK,((self.x + width),self.y),((self.x + width),(self.y + width)),1) # right
+                pygame.draw.line(screen,wall_color,((self.x + width),self.y),((self.x + width),(self.y + width)),wall_thickness) # right
             if self.walls[2]:
-                pygame.draw.line(screen,BLACK,((self.x + width),(self.y + width)),(self.x,(self.y + width)),1) # bottom
+                pygame.draw.line(screen,wall_color,((self.x + width),(self.y + width)),(self.x,(self.y + width)),wall_thickness) # bottom
             if self.walls[3]:
-                pygame.draw.line(screen,BLACK,(self.x,(self.y + width)),(self.x,self.y),1) # left
+                pygame.draw.line(screen,wall_color,(self.x,(self.y + width)),(self.x,self.y),wall_thickness) # left
     
     def checkNeighbors(self):
         #print("Top; y: " + str(int(self.y / width)) + ", y - 1: " + str(int(self.y / width) - 1))
@@ -175,10 +193,6 @@ while not done:
 
 #-------------------------------------------------------------------------------------
 
-colorWHITE = (255,255,255)
-colorBLACK = (0, 0, 0)
-colorGRAY = (121, 121, 121)
-
 pygame.display.set_caption('Maze Game')
 
 gameQuit = False
@@ -238,25 +252,29 @@ while not gameQuit:
 
         # movement
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT and screen.get_at((move_x - 5, move_y)) != colorBLACK: #tests if theres a wall to the left of the rect
-                #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
-                move_x -= 50
-                move_count += 1
-            if event.key == pygame.K_RIGHT and screen.get_at((move_x + 45, move_y)) != colorBLACK:   
+            if event.key == pygame.K_LEFT and screen.get_at((move_x - 5, move_y)) != wall_color: #tests if theres a wall to the left of the rect
+                #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])  
+                #if (move_x >= 2 and move_x <= size[1] - cell): 
+                    move_x -= 50
+                    move_count += 1
+            if event.key == pygame.K_RIGHT and screen.get_at((move_x + 45, move_y)) != wall_color:   
                 #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41]) 
-                move_x += 50
-                move_count += 1
-            if event.key == pygame.K_UP and screen.get_at((move_x, move_y - 5)) != colorBLACK:
+                #if (move_x >= 2 and move_x <= size[1] - cell):
+                    move_x += 50
+                    move_count += 1
+            if event.key == pygame.K_UP and screen.get_at((move_x, move_y - 5)) != wall_color:
                 #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
-                move_y -= 50
-                move_count += 1
-            if event.key == pygame.K_DOWN and screen.get_at((move_x, move_y + 45)) != colorBLACK:
+                #if (move_y >= 2 and move_y <= size[1] - cell):
+                    move_y -= 50
+                    move_count += 1
+            if event.key == pygame.K_DOWN and screen.get_at((move_x, move_y + 45)) != wall_color:
                 #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
-                move_y += 50
-                move_count += 1
+                #if (move_y >= 2 and move_y <= size[1] - cell):
+                    move_y += 50
+                    move_count += 1
 
     
-    screen.fill(colorWHITE)
+    screen.fill(colorBG)
     for y in range(rows):
         for x in range(cols):
             grid[y][x].draw()
