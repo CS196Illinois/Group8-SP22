@@ -12,8 +12,15 @@ bg_sprite3 = pygame.image.load("Research/sprites/grass floor 3.png")
 bg_sprite4 = pygame.image.load("Research/sprites/grass floor 4.png")
 
 bg_set = [bg_sprite1, bg_sprite2, bg_sprite3, bg_sprite4]
-mc_sprite = pygame.image.load("Research/sprites/mc sprite.png")
+mc_sprite_up = pygame.image.load("Research/sprites/mc sprite up.png")
+mc_sprite_down = pygame.image.load("Research/sprites/mc sprite down.png")
+mc_sprite_left = pygame.image.load("Research/sprites/mc sprite left.png")
+mc_sprite_right = pygame.image.load("Research/sprites/mc sprite right.png")
+mc_set = [mc_sprite_up, mc_sprite_down, mc_sprite_left, mc_sprite_right]
+
 fl_sprite = pygame.image.load("Research/sprites/flower sprite.png")
+
+dir = 4
 
 WHITE = (255,255,255)
 GREY = (20,20,20)
@@ -32,7 +39,7 @@ width = 50
 size = (maze_dim[0] * cell, maze_dim[1] * cell)
 
 wall_thickness = 3
-wall_color = colorBLACK
+wall_color = (9, 153, 74)
 
 # size = (701,701)
 screen = pygame.display.set_mode(size)
@@ -53,6 +60,8 @@ class Cell():
         global width
         self.x = x * width
         self.y = y * width
+        # rand select floor texture in class
+        self.floor_texture = random.randint(0, 3)
         
         self.visited = False
         self.current = False
@@ -72,7 +81,7 @@ class Cell():
     def draw(self):
         if self.visited:
             #pygame.draw.rect(screen,colorBG,(self.x,self.y,width,width))
-            screen.blit(bg_set[random.randint(0, 3)], (self.x, self.y))
+            screen.blit(bg_set[self.floor_texture], (self.x, self.y))
             if self.walls[0]:
                 pygame.draw.line(screen,wall_color,(self.x,self.y),((self.x + width),self.y),wall_thickness) # top
             if self.walls[1]:
@@ -198,10 +207,10 @@ pygame.display.set_caption('Maze Game')
 gameQuit = False
 gameWon = False
 
-getBlue = False
-getRed = False
-getGreen = False
-getPurple = False
+getOne = False
+getTwo = False
+getThree = False
+getFour = False
 
 move_count = 0
 
@@ -253,25 +262,29 @@ while not gameQuit:
         # movement
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT and screen.get_at((move_x - 5, move_y)) != wall_color: #tests if theres a wall to the left of the rect
+                dir = 1
                 #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])  
                 #if (move_x >= 2 and move_x <= size[1] - cell): 
-                    move_x -= 50
-                    move_count += 1
+                move_x -= 50
+                move_count += 1
             if event.key == pygame.K_RIGHT and screen.get_at((move_x + 45, move_y)) != wall_color:   
+                dir = 2
                 #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41]) 
                 #if (move_x >= 2 and move_x <= size[1] - cell):
-                    move_x += 50
-                    move_count += 1
+                move_x += 50
+                move_count += 1
             if event.key == pygame.K_UP and screen.get_at((move_x, move_y - 5)) != wall_color:
+                dir = 3
                 #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
                 #if (move_y >= 2 and move_y <= size[1] - cell):
-                    move_y -= 50
-                    move_count += 1
+                move_y -= 50
+                move_count += 1
             if event.key == pygame.K_DOWN and screen.get_at((move_x, move_y + 45)) != wall_color:
+                dir = 4
                 #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
                 #if (move_y >= 2 and move_y <= size[1] - cell):
-                    move_y += 50
-                    move_count += 1
+                move_y += 50
+                move_count += 1
 
     
     screen.fill(colorBG)
@@ -287,7 +300,7 @@ while not gameQuit:
     cell_loc = []
 
     # populate coordinates in separate loop
-    
+
     for x in range(0, size[0]//width):
         for y in range(0, size[1]//width):
             cell_loc.append((x,y))
@@ -311,34 +324,41 @@ while not gameQuit:
         rect.fill(color)
         screen.blit(rect, (x * 50,y * 50))
 
-    # make gray rectangle object
-    pygame.draw.rect(screen, colorGRAY, [move_x, move_y, 41, 41])
+    # blit mc sprite based on key input
+    if (dir == 1) :
+        screen.blit(mc_sprite_left, [move_x, move_y])
+    if (dir == 2) :
+        screen.blit(mc_sprite_right, [move_x, move_y])
+    if (dir == 3) :
+        screen.blit(mc_sprite_up, [move_x, move_y])
+    if (dir == 4) :
+        screen.blit(mc_sprite_down, [move_x, move_y])
 
     # test if flowers were picked up
-    if pickup1_x - move_x == 10 and pickup1_y - move_y == 10 and getBlue == False:
-        print("GOT BLUE")
-        getBlue = True
-    if pickup2_x - move_x == 10 and pickup2_y - move_y == 10 and getRed == False:
-        print("GOT RED")
-        getRed = True
-    if pickup3_x - move_x == 10 and pickup3_y - move_y == 10 and getGreen == False:
-        print("GOT GREEN")
-        getGreen = True
-    if pickup4_x - move_x == 10 and pickup4_y - move_y == 10 and getPurple == False:
-        print("GOT PURPLE")
-        getPurple = True
+    if pickup1_x - move_x == 10 and pickup1_y - move_y == 10 and getOne == False:
+        print("GOT 1/4!")
+        getOne = True
+    if pickup2_x - move_x == 10 and pickup2_y - move_y == 10 and getTwo == False:
+        print("GOT 2/4!")
+        getTwo = True
+    if pickup3_x - move_x == 10 and pickup3_y - move_y == 10 and getThree == False:
+        print("GOT 3/4!")
+        getThree = True
+    if pickup4_x - move_x == 10 and pickup4_y - move_y == 10 and getFour == False:
+        print("GOT 4/4!")
+        getFour = True
 
     # If flowers were not picked up, draw the flowers
-    if getBlue == False:
+    if getOne == False:
         pygame.draw.rect(screen, 'Blue', [(pickup1_x), (pickup1_y), 20, 20])
-    if getRed == False:
+    if getTwo == False:
         pygame.draw.rect(screen, 'Red', [(pickup2_x), (pickup2_y), 20, 20])
-    if getGreen == False:
+    if getThree == False:
         pygame.draw.rect(screen, 'Green', [(pickup3_x), (pickup3_y), 20, 20])
-    if getPurple == False:
+    if getFour == False:
         pygame.draw.rect(screen, 'Purple', [(pickup4_x), (pickup4_y), 20, 20])
 
-    if getBlue == True and getRed == True and getGreen == True and getPurple == True and gameWon == False:
+    if getOne == True and getTwo == True and getThree == True and getFour == True and gameWon == False:
         gameWon == True
         print("YOU WON! Final step count: " + str(move_count))
         exit()
