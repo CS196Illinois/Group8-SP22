@@ -33,13 +33,13 @@ colorBLACK = (0, 0, 0)
 colorGRAY = (121, 121, 121)
 colorBG = (222, 211, 184)
 
-maze_dim = (7, 7)
+maze_dim = (10, 10)
 cell = 50
 width = 50
 size = (maze_dim[0] * cell, maze_dim[1] * cell)
 
 wall_thickness = 3
-wall_color = (9, 153, 74)
+wall_color = (1, 138, 65)
 
 # size = (701,701)
 screen = pygame.display.set_mode(size)
@@ -247,6 +247,9 @@ if pickup4_x + pickup4_y == 30:
 # game loop
 
 while not gameQuit:
+    # check and update location of mc:
+    loc_mc = (move_x//50, move_y//50)
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             gameQuit = True
@@ -261,25 +264,25 @@ while not gameQuit:
 
         # movement
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT and screen.get_at((move_x - 5, move_y)) != wall_color: #tests if theres a wall to the left of the rect
+            if event.key == pygame.K_LEFT and grid[loc_mc[1]][loc_mc[0]].walls[3] == False: #tests if theres a wall to the left of the rect
                 dir = 1
                 #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])  
                 #if (move_x >= 2 and move_x <= size[1] - cell): 
                 move_x -= 50
                 move_count += 1
-            if event.key == pygame.K_RIGHT and screen.get_at((move_x + 45, move_y)) != wall_color:   
+            if event.key == pygame.K_RIGHT and grid[loc_mc[1]][loc_mc[0]].walls[1] == False:   
                 dir = 2
                 #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41]) 
                 #if (move_x >= 2 and move_x <= size[1] - cell):
                 move_x += 50
                 move_count += 1
-            if event.key == pygame.K_UP and screen.get_at((move_x, move_y - 5)) != wall_color:
+            if event.key == pygame.K_UP and grid[loc_mc[1]][loc_mc[0]].walls[0] == False:
                 dir = 3
                 #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
                 #if (move_y >= 2 and move_y <= size[1] - cell):
                 move_y -= 50
                 move_count += 1
-            if event.key == pygame.K_DOWN and screen.get_at((move_x, move_y + 45)) != wall_color:
+            if event.key == pygame.K_DOWN and grid[loc_mc[1]][loc_mc[0]].walls[2] == False:
                 dir = 4
                 #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
                 #if (move_y >= 2 and move_y <= size[1] - cell):
@@ -291,9 +294,6 @@ while not gameQuit:
     for y in range(rows):
         for x in range(cols):
             grid[y][x].draw()
-
-                        # check and update location of mc:
-    loc_mc = (move_x//50, move_y//50)
 
     # create a black square for every cell on the board except at a certain cell
 
@@ -350,13 +350,13 @@ while not gameQuit:
 
     # If flowers were not picked up, draw the flowers
     if getOne == False:
-        pygame.draw.rect(screen, 'Blue', [(pickup1_x), (pickup1_y), 20, 20])
+        screen.blit(fl_sprite, (pickup1_x, pickup1_y))
     if getTwo == False:
-        pygame.draw.rect(screen, 'Red', [(pickup2_x), (pickup2_y), 20, 20])
+        screen.blit(fl_sprite, (pickup2_x, pickup2_y))
     if getThree == False:
-        pygame.draw.rect(screen, 'Green', [(pickup3_x), (pickup3_y), 20, 20])
+        screen.blit(fl_sprite, (pickup3_x, pickup3_y))
     if getFour == False:
-        pygame.draw.rect(screen, 'Purple', [(pickup4_x), (pickup4_y), 20, 20])
+        screen.blit(fl_sprite, (pickup4_x, pickup4_y))
 
     if getOne == True and getTwo == True and getThree == True and getFour == True and gameWon == False:
         gameWon == True
