@@ -264,30 +264,34 @@ while not gameQuit:
 
         # movement
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT and grid[loc_mc[1]][loc_mc[0]].walls[3] == False: #tests if theres a wall to the left of the rect
+            if event.key == pygame.K_LEFT: #tests if theres a wall to the left of the rect
                 dir = 1
                 #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])  
                 #if (move_x >= 2 and move_x <= size[1] - cell): 
-                move_x -= 50
-                move_count += 1
-            if event.key == pygame.K_RIGHT and grid[loc_mc[1]][loc_mc[0]].walls[1] == False:   
+                if grid[loc_mc[1]][loc_mc[0]].walls[3] == False:
+                    move_x -= 50
+                    move_count += 1
+            if event.key == pygame.K_RIGHT:
                 dir = 2
                 #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41]) 
                 #if (move_x >= 2 and move_x <= size[1] - cell):
-                move_x += 50
-                move_count += 1
-            if event.key == pygame.K_UP and grid[loc_mc[1]][loc_mc[0]].walls[0] == False:
+                if grid[loc_mc[1]][loc_mc[0]].walls[1] == False:
+                    move_x += 50
+                    move_count += 1
+            if event.key == pygame.K_UP:
                 dir = 3
                 #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
                 #if (move_y >= 2 and move_y <= size[1] - cell):
-                move_y -= 50
-                move_count += 1
-            if event.key == pygame.K_DOWN and grid[loc_mc[1]][loc_mc[0]].walls[2] == False:
+                if grid[loc_mc[1]][loc_mc[0]].walls[0] == False:
+                    move_y -= 50
+                    move_count += 1
+            if event.key == pygame.K_DOWN:
                 dir = 4
                 #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
                 #if (move_y >= 2 and move_y <= size[1] - cell):
-                move_y += 50
-                move_count += 1
+                if grid[loc_mc[1]][loc_mc[0]].walls[2] == False:
+                    move_y += 50
+                    move_count += 1
 
     
     screen.fill(colorBG)
