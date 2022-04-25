@@ -10,8 +10,10 @@ bg_sprite1 = pygame.image.load("Research/sprites/grass floor 1.png")
 bg_sprite2 = pygame.image.load("Research/sprites/grass floor 2.png")
 bg_sprite3 = pygame.image.load("Research/sprites/grass floor 3.png")
 bg_sprite4 = pygame.image.load("Research/sprites/grass floor 4.png")
+bg_sprite5 = pygame.image.load("Research/sprites/grass floor 5.png")
+bg_sprite6 = pygame.image.load("Research/sprites/grass floor 6.png")
 
-bg_set = [bg_sprite1, bg_sprite2, bg_sprite3, bg_sprite4]
+bg_set = [bg_sprite1, bg_sprite2, bg_sprite3, bg_sprite4, bg_sprite5, bg_sprite6]
 mc_sprite_up = pygame.image.load("Research/sprites/mc sprite up.png")
 mc_sprite_down = pygame.image.load("Research/sprites/mc sprite down.png")
 mc_sprite_left = pygame.image.load("Research/sprites/mc sprite left.png")
@@ -20,6 +22,7 @@ mc_set = [mc_sprite_up, mc_sprite_down, mc_sprite_left, mc_sprite_right]
 
 fl_sprite = pygame.image.load("Research/sprites/flower sprite.png")
 
+#starting position sprite facing down
 dir = 4
 
 WHITE = (255,255,255)
@@ -32,8 +35,11 @@ colorWHITE = (255,255,255)
 colorBLACK = (0, 0, 0)
 colorGRAY = (121, 121, 121)
 colorBG = (222, 211, 184)
+light = (9, 134, 148)
 
-maze_dim = (10, 10)
+# maze properties
+
+maze_dim = (8, 8)
 cell = 50
 width = 50
 size = (maze_dim[0] * cell, maze_dim[1] * cell)
@@ -41,9 +47,7 @@ size = (maze_dim[0] * cell, maze_dim[1] * cell)
 wall_thickness = 3
 wall_color = (1, 138, 65)
 
-# size = (701,701)
 screen = pygame.display.set_mode(size)
-
 pygame.display.set_caption("Maze Generator")
 
 done = False
@@ -53,6 +57,19 @@ done = False
 cols = int(size[0] / width)
 rows = int(size[1] / width)
 
+# initiate set of flowers
+
+fl_num = 4
+fl_set = []
+
+# generate flower coordinates
+
+while len(fl_set) < fl_num:
+    # add first flower
+    coord_fl = ((50 * random.randint(0, rows)) + 15, (50 * random.randint(0, cols)) + 15)
+    if coord_fl not in fl_set and coord_fl != (15, 15):
+        fl_set.append(coord_fl)
+
 stack = []
 
 class Cell():
@@ -61,7 +78,7 @@ class Cell():
         self.x = x * width
         self.y = y * width
         # rand select floor texture in class
-        self.floor_texture = random.randint(0, 3)
+        self.floor_texture = random.randint(0, 5)
         
         self.visited = False
         self.current = False
@@ -219,30 +236,6 @@ move_x = 5
 move_y = 5
 
 location = (move_x, move_y)
-
-# "pick-up" locations
-
-pickup1_x = (50 * random.randint(0, rows - 1)) + 15
-pickup1_y = (50 * random.randint(0, cols - 1)) + 15
-
-pickup2_x = (50 * random.randint(0, rows - 1)) + 15
-pickup2_y = (50 * random.randint(0, cols - 1)) + 15
-
-pickup3_x = (50 * random.randint(0, rows - 1)) + 15
-pickup3_y = (50 * random.randint(0, cols - 1)) + 15
-
-pickup4_x = (50 * random.randint(0, rows - 1)) + 15
-pickup4_y = (50 * random.randint(0, cols - 1)) + 15
-
-# makes sure the pickups dont start on the player's starting position
-if pickup1_x + pickup1_y == 30:
-    pickup1_x += 50
-if pickup2_x + pickup2_y == 30:
-    pickup2_y += 50
-if pickup3_x + pickup3_y == 30:
-    pickup3_x += 50
-if pickup4_x + pickup4_y == 30:
-    pickup4_y += 50
     
 # game loop
 
@@ -322,10 +315,10 @@ while not gameQuit:
         opacity = int((255.0 * (distance) / 3))
         if (opacity > 255):
             opacity = 255
-        color = (0, 0, 0)
+        color = (1, 126, 133)
         rect = pygame.Surface((50, 50))
         rect.set_alpha(opacity)
-        rect.fill(color)
+        rect.fill(light)
         screen.blit(rect, (x * 50,y * 50))
 
     # blit mc sprite based on key input
@@ -339,28 +332,28 @@ while not gameQuit:
         screen.blit(mc_sprite_down, [move_x, move_y])
 
     # test if flowers were picked up
-    if pickup1_x - move_x == 10 and pickup1_y - move_y == 10 and getOne == False:
+    if fl_set[0][0] - move_x == 10 and fl_set[0][1] - move_y == 10 and getOne == False:
         print("GOT 1/4!")
         getOne = True
-    if pickup2_x - move_x == 10 and pickup2_y - move_y == 10 and getTwo == False:
+    if fl_set[1][0] - move_x == 10 and fl_set[1][1] - move_y == 10 and getTwo == False:
         print("GOT 2/4!")
         getTwo = True
-    if pickup3_x - move_x == 10 and pickup3_y - move_y == 10 and getThree == False:
+    if fl_set[2][0] - move_x == 10 and fl_set[2][1] - move_y == 10 and getThree == False:
         print("GOT 3/4!")
         getThree = True
-    if pickup4_x - move_x == 10 and pickup4_y - move_y == 10 and getFour == False:
+    if fl_set[3][0] - move_x == 10 and fl_set[3][1] - move_y == 10 and getFour == False:
         print("GOT 4/4!")
         getFour = True
 
     # If flowers were not picked up, draw the flowers
     if getOne == False:
-        screen.blit(fl_sprite, (pickup1_x, pickup1_y))
+        screen.blit(fl_sprite, fl_set[0])
     if getTwo == False:
-        screen.blit(fl_sprite, (pickup2_x, pickup2_y))
+        screen.blit(fl_sprite, fl_set[1])
     if getThree == False:
-        screen.blit(fl_sprite, (pickup3_x, pickup3_y))
+        screen.blit(fl_sprite, fl_set[2])
     if getFour == False:
-        screen.blit(fl_sprite, (pickup4_x, pickup4_y))
+        screen.blit(fl_sprite, fl_set[3])
 
     if getOne == True and getTwo == True and getThree == True and getFour == True and gameWon == False:
         gameWon == True
