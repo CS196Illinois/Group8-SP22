@@ -23,6 +23,7 @@ mc_set = [mc_sprite_up, mc_sprite_down, mc_sprite_left, mc_sprite_right]
 
 fl_sprite = pygame.image.load("Research/sprites/flower sprite.png")
 
+
 #starting position sprite facing down
 dir = 4
 
@@ -219,9 +220,9 @@ while not done:
         next_cell = 0
 
     pygame.display.flip()
-#-----------------------------------------------------------------------------
-# ------------------------------------------------------------------------------------------------------------
-#Score implementation 
+
+# --------------------------------Score Implementation----------------------------------------------------------------------------
+
 #Colors for use
 white = (255, 255, 255)
 green = (0, 255, 0)
@@ -248,10 +249,53 @@ def show_score(newX, newY):
     screen.blit(score, (newX, newY))
 
  
+#-------------------------------------Retry Button------------------------------------------------
+button_img = pygame.image.load('Research/sprites/reset.png')
 
 
-#-------------------------------------------------------------------------------------
 
+#Making a class
+class Button():
+    def __init__(self, x, y, image):
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
+
+    #drawing it
+    def draw(self):
+        #get mouse position
+        pos = pygame.mouse.get_pos()
+        action = False
+        #check if mouse is over the button
+        if self.rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1:
+                action = True
+        #draw button
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+        return action
+
+#create restart button instance
+button = Button(10 , 10 , button_img)
+
+def reset_game():
+    gameQuit = False
+    gameWon = False
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#---------------------------------------------------------------------------------------
 pygame.display.set_caption('Maze Game')
 
 gameQuit = False
@@ -396,6 +440,12 @@ while not gameQuit:
         gameWon == True
         print("YOU WON! Final step count: " + str(move_count))
         exit()
+
+    # Reset Button
+    if gameWon == True:
+        if button.draw() == True:
+            gameWon = False
+            reset_game()
 
     #Score display
     show_score(scoreX, scoreY)
