@@ -3,6 +3,7 @@ import random
 import pygame
 import sys
 import math
+from pygame.locals import *
 pygame.init()
 
 #import sprites
@@ -62,6 +63,8 @@ rows = int(size[1] / width)
 fl_num = 4
 fl_set = []
 
+#Start score for flowers picked up
+flowers = 0
 # generate flower coordinates
 
 while len(fl_set) < fl_num:
@@ -216,6 +219,44 @@ while not done:
         next_cell = 0
 
     pygame.display.flip()
+#-----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------
+#score implementation !! It works!
+#Colors for use
+white = (255, 255, 255)
+green = (0, 255, 0)
+blue = (0, 0, 128)
+ 
+# Assign location
+scoreX = 3
+scoreY = 3
+ 
+# create the display surface object
+# of specific dimension..e(X, Y).
+#use the variable screen
+ 
+ 
+# create a font object.
+# Remeber: 1st parameter is the font file
+# which is present in pygame.
+# 2nd parameter is size of the font
+font = pygame.font.Font('freesansbold.ttf', 12)
+
+
+def show_score(newX, newY):
+    score = font.render("Score: " + str(flowers), True, blue)
+    screen.blit(score, (newX, newY))
+# create a text surface object,
+text = font.render('Score:' + str(flowers), True, green, blue)
+ 
+# I think you need the rectangle if you want the text to show up without this step it hasn't worked !
+# create a rectangular object for the
+# text surface object
+textRect = text.get_rect()
+ 
+# set the center of the rectangular object.
+textRect.center = (200, 200)
+
 
 #-------------------------------------------------------------------------------------
 
@@ -335,15 +376,19 @@ while not gameQuit:
     if fl_set[0][0] - move_x == 10 and fl_set[0][1] - move_y == 10 and getOne == False:
         print("GOT 1/4!")
         getOne = True
+        flowers = flowers + 1
     if fl_set[1][0] - move_x == 10 and fl_set[1][1] - move_y == 10 and getTwo == False:
         print("GOT 2/4!")
         getTwo = True
+        flowers += 1
     if fl_set[2][0] - move_x == 10 and fl_set[2][1] - move_y == 10 and getThree == False:
         print("GOT 3/4!")
         getThree = True
+        flowers += 1
     if fl_set[3][0] - move_x == 10 and fl_set[3][1] - move_y == 10 and getFour == False:
         print("GOT 4/4!")
         getFour = True
+        flowers += 1
 
     # If flowers were not picked up, draw the flowers
     if getOne == False:
@@ -359,76 +404,9 @@ while not gameQuit:
         gameWon == True
         print("YOU WON! Final step count: " + str(move_count))
         exit()
-        
+
+    #Score display
+    show_score(scoreX, scoreY)
+
     pygame.display.flip()           
-
-# ------------------------------------------------------------------------------------------------------------
-#score implementation !!
-#Colors for use
-white = (255, 255, 255)
-green = (0, 255, 0)
-blue = (0, 0, 128)
- 
-# Assign location
-scoreX = 400
-scoreY = 400
- 
-# create the display surface object
-# of specific dimension..e(X, Y).
-display_surface = pygame.display.set_mode((scoreX, scoreY))
- 
- 
-# create a font object.
-# Remeber: 1st parameter is the font file
-# which is present in pygame.
-# 2nd parameter is size of the font
-font = pygame.font.Font('freesansbold.ttf', 32)
-#score change this when you integrate to maze 
-flowers = 0
-
-#here should change the score
-for x in range(0, 5):
-    flowers = 1 + flowers
-
-# create a text surface object,
-text = font.render('Score:' + str(flowers), True, green, blue)
- 
-# I think you need the rectangle if you want the text to show up without this step it hasn't worked !
-# create a rectangular object for the
-# text surface object
-textRect = text.get_rect()
- 
-# set the center of the rectangular object.
-textRect.center = (200, 200)
- 
-# Sets up window
-while True:
- 
-    # completely fill the surface object
-    # with white color
-    display_surface.fill(white)
- 
-    # copying the text surface object
-    # to the display surface object
-    # at the center
-    display_surface.blit(text, textRect)
- 
-    for event in pygame.event.get():
- 
-        # if event object type is QUIT
-        # then quitting the pygame
-        # and program both.
-        if event.type == pygame.QUIT:
- 
-            # deactivates the pygame library
-            pygame.quit()
- 
-            # quit the program.
-            quit()
- 
-        # Draws the surface object to the screen.
-        pygame.display.update()
-
-#-----------------------------------------------------------------------------------------------
-#retry button
 
