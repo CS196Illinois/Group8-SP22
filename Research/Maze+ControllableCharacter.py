@@ -221,7 +221,7 @@ while not done:
     pygame.display.flip()
 #-----------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------------------
-#score implementation !! It works!
+#Score implementation 
 #Colors for use
 white = (255, 255, 255)
 green = (0, 255, 0)
@@ -246,16 +246,8 @@ font = pygame.font.Font('freesansbold.ttf', 12)
 def show_score(newX, newY):
     score = font.render("Score: " + str(flowers), True, blue)
     screen.blit(score, (newX, newY))
-# create a text surface object,
-text = font.render('Score:' + str(flowers), True, green, blue)
+
  
-# I think you need the rectangle if you want the text to show up without this step it hasn't worked !
-# create a rectangular object for the
-# text surface object
-textRect = text.get_rect()
- 
-# set the center of the rectangular object.
-textRect.center = (200, 200)
 
 
 #-------------------------------------------------------------------------------------
