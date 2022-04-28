@@ -22,6 +22,7 @@ mc_sprite_right = pygame.image.load("Research/sprites/mc sprite right.png")
 mc_set = [mc_sprite_up, mc_sprite_down, mc_sprite_left, mc_sprite_right]
 
 fl_sprite = pygame.image.load("Research/sprites/flower sprite.png")
+button_img = pygame.image.load('Research/sprites/reset.png')
 
 
 #starting position sprite facing down
@@ -221,6 +222,8 @@ while not done:
 
     pygame.display.flip()
 
+
+
 # --------------------------------Score Implementation----------------------------------------------------------------------------
 
 #Colors for use
@@ -250,8 +253,6 @@ def show_score(newX, newY):
 
  
 #-------------------------------------Retry Button------------------------------------------------
-button_img = pygame.image.load('Research/sprites/reset.png')
-
 
 
 #Making a class
@@ -263,6 +264,7 @@ class Button():
 
     #drawing it
     def draw(self):
+        
         #get mouse position
         pos = pygame.mouse.get_pos()
         action = False
@@ -275,20 +277,7 @@ class Button():
         return action
 
 #create restart button instance
-button = Button(10 , 10 , button_img)
-
-def reset_game():
-    gameQuit = False
-    gameWon = False
-
-
-
-
-
-
-
-
-
+button = Button(155 , 150 , button_img)
 
 
 
@@ -314,6 +303,12 @@ move_y = 5
 
 location = (move_x, move_y)
     
+
+
+
+
+
+#----------------------------------------------------------------------------------------
 # game loop
 
 while not gameQuit:
@@ -436,16 +431,26 @@ while not gameQuit:
     if getFour == False:
         screen.blit(fl_sprite, fl_set[3])
 
+
     if getOne == True and getTwo == True and getThree == True and getFour == True and gameWon == False:
         gameWon == True
-        print("YOU WON! Final step count: " + str(move_count))
-        exit()
-
-    # Reset Button
-    if gameWon == True:
+        button.draw()
         if button.draw() == True:
-            gameWon = False
-            reset_game()
+            print("Clicked")
+            gameWon ==  False
+            flowers = 0
+            getOne = False
+            getTwo = False
+            getThree = False
+            getFour = False
+            move_count = 0
+            move_x = 5
+            move_y = 5
+
+
+        print("YOU WON! Final step count: " + str(move_count))
+        #exit()
+
 
     #Score display
     show_score(scoreX, scoreY)
