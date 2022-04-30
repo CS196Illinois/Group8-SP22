@@ -23,7 +23,7 @@ mc_set = [mc_sprite_up, mc_sprite_down, mc_sprite_left, mc_sprite_right]
 
 fl_sprite = pygame.image.load("Research/sprites/flower sprite.png")
 button_img = pygame.image.load('Research/sprites/reset.png')
-
+button2_img = pygame.image.load('Research/sprites/fast-forward.png')
 
 #starting position sprite facing down
 dir = 4
@@ -254,7 +254,7 @@ def show_score(newX, newY):
  
 #-------------------------------------Retry Button------------------------------------------------
 
-
+#----------Reset level ---------------------
 #Making a class
 class Button():
     def __init__(self, x, y, image):
@@ -279,6 +279,26 @@ class Button():
 #create restart button instance
 button = Button(155 , 150 , button_img)
 
+#--------------New Level-----------
+class ButtonReset():
+    def __init__(self, x, y, image):
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
+    
+    #draw it
+    def draw2(self):
+
+        pos = pygame.mouse.get_pos()
+        action = False
+        if self.rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1:
+                action = True
+        
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+        return action
+
+button2 = ButtonReset(300 , 300 , button2_img)
 
 
 
@@ -435,8 +455,9 @@ while not gameQuit:
     if getOne == True and getTwo == True and getThree == True and getFour == True and gameWon == False:
         gameWon == True
         button.draw()
+        button2.draw2()
         if button.draw() == True:
-            print("Clicked")
+            print("Retry Level")
             gameWon ==  False
             flowers = 0
             getOne = False
@@ -446,6 +467,24 @@ while not gameQuit:
             move_count = 0
             move_x = 5
             move_y = 5
+            dir = 4
+        if button2.draw2() == True:
+            print("New Level")
+            gameWon == False
+            flowers = 0
+            getOne = False
+            getTwo = False
+            getThree = False
+            getFour = False
+            move_count = 0
+            move_x = 5
+            move_y = 5
+            dir = 4
+            done = False
+            #fl_set.clear()
+            #instance_of_Cell = Cell()
+            #instance_of_Cell()
+
 
 
         print("YOU WON! Final step count: " + str(move_count))
