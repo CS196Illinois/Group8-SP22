@@ -68,13 +68,13 @@ fl_set = []
 #Start score for flowers picked up
 flowers = 0
 # generate flower coordinates
-
-while len(fl_set) < fl_num:
-    # add first flower
-    coord_fl = ((50 * random.randint(0, rows - 1)) + 15, (50 * random.randint(0, cols - 1)) + 15)
-    if coord_fl not in fl_set and coord_fl != (15, 15):
-        fl_set.append(coord_fl)
-
+def flowercoords():
+    while len(fl_set) < fl_num:
+        # add first flower
+        coord_fl = ((50 * random.randint(0, rows - 1)) + 15, (50 * random.randint(0, cols - 1)) + 15)
+        if coord_fl not in fl_set and coord_fl != (15, 15):
+            fl_set.append(coord_fl)
+flowercoords()
 stack = []
 
 class Cell():
@@ -174,6 +174,8 @@ current_cell = grid[0][0]
 next_cell = 0
 
 # -------- Maze Generator Loop -----------
+
+
 while not done:
     # --- Main event loop
     for event in pygame.event.get():
@@ -181,6 +183,7 @@ while not done:
             done = True
             pygame.quit()
             sys.exit()
+    
     
     current_cell.visited = True
     current_cell.current = True
@@ -297,6 +300,13 @@ class ButtonReset():
         return action
 
 button2 = ButtonReset(size[0] - 70, size[1] - 70, button2_img)
+
+#------------------------------------------------------------------------------------------
+
+
+    
+
+
 
 
 
@@ -446,7 +456,7 @@ while not gameQuit:
         gameWon == True
         button.draw()
         button2.draw2()
-        if button.draw() == True:
+        if button2.draw2() == True:
             print("Retry Level")
             gameWon ==  False
             flowers = 0
@@ -458,7 +468,7 @@ while not gameQuit:
             move_x = 5
             move_y = 5
             dir = 4
-        if button2.draw2() == True:
+        if button.draw() == True:
             print("New Level")
             gameWon == False
             flowers = 0
@@ -470,12 +480,64 @@ while not gameQuit:
             move_x = 5
             move_y = 5
             dir = 4
+            fl_set = []
+            flowercoords()
+            grid = []
+            stack = []
+            for y in range(rows):
+                grid.append([])
+                for x in range(cols):
+                    grid[y].append(Cell(x,y))
+            current_cell = grid[0][0]
+            next_cell = 0
             done = False
-            #fl_set.clear()
-            #instance_of_Cell = Cell()
-            #instance_of_Cell()
+            cols = maze_dim[0]
+            rows = maze_dim[1]
+            while not done:
+                current_cell.visited = True
+                current_cell.current = True
+    
+                for y in range(rows):
+                    for x in range(cols):
+                        grid[y][x].draw()
+    
+                next_cell = current_cell.checkNeighbors()
+    
+                if next_cell != False:
+                    current_cell.neighbors = []
+        
+                    stack.append(current_cell)
+        
+                    removeWalls(current_cell,next_cell)
+        
+                    current_cell.current = False
+        
+                    current_cell = next_cell
+    
+                elif len(stack) > 0:
+                    current_cell.current = False
+                    current_cell = stack.pop()
+        
+                elif len(stack) == 0:
+                    #print("FULL")
+                    done = True
+        
+                    for y in range(rows):
+                        grid.append([])
+                        for x in range(cols):
+                            grid[y].append(Cell(x,y))
+        
+                    current_cell = grid[0][0]
+                    next_cell = 0
 
+            
+            
+           
+            
+            
+            
 
+        #-------------------------------------------------------
 
         #print("YOU WON! Final step count: " + str(move_count))
         #exit()
