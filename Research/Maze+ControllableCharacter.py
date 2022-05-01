@@ -51,7 +51,7 @@ wall_thickness = 3
 wall_color = (1, 138, 65)
 
 screen = pygame.display.set_mode(size)
-pygame.display.set_caption("Maze Generator")
+pygame.display.set_caption("Flower Maze")
 
 done = False
 
