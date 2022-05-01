@@ -22,8 +22,8 @@ mc_sprite_right = pygame.image.load("Research/sprites/mc sprite right.png")
 mc_set = [mc_sprite_up, mc_sprite_down, mc_sprite_left, mc_sprite_right]
 
 fl_sprite = pygame.image.load("Research/sprites/flower sprite.png")
-button_img = pygame.image.load('Research/sprites/reset.png')
-button2_img = pygame.image.load('Research/sprites/fast-forward.png')
+button_img = pygame.image.load('Research/sprites/new maze button.png')
+button2_img = pygame.image.load('Research/sprites/retry maze button.png')
 
 #starting position sprite facing down
 dir = 4
@@ -74,8 +74,6 @@ while len(fl_set) < fl_num:
     coord_fl = ((50 * random.randint(0, rows - 1)) + 15, (50 * random.randint(0, cols - 1)) + 15)
     if coord_fl not in fl_set and coord_fl != (15, 15):
         fl_set.append(coord_fl)
-
-print(fl_set)
 
 stack = []
 
@@ -248,7 +246,7 @@ font = pygame.font.Font('freesansbold.ttf', 12)
 
 
 def show_score(newX, newY):
-    score = font.render("Score: " + str(flowers), True, blue)
+    score = font.render("Score: " + str(move_count), True, blue)
     screen.blit(score, (newX, newY))
 
  
@@ -277,7 +275,7 @@ class Button():
         return action
 
 #create restart button instance
-button = Button(155 , 150 , button_img)
+button = Button(size[0]/2 - 60, size[1]/2 - 40, button_img)
 
 #--------------New Level-----------
 class ButtonReset():
@@ -298,7 +296,7 @@ class ButtonReset():
         screen.blit(self.image, (self.rect.x, self.rect.y))
         return action
 
-button2 = ButtonReset(300 , 300 , button2_img)
+button2 = ButtonReset(size[0] - 70, size[1] - 70, button2_img)
 
 
 
@@ -479,7 +477,7 @@ while not gameQuit:
 
 
 
-        print("YOU WON! Final step count: " + str(move_count))
+        #print("YOU WON! Final step count: " + str(move_count))
         #exit()
 
 
