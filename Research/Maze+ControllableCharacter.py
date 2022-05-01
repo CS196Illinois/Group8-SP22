@@ -184,6 +184,7 @@ while not done:
             pygame.quit()
             sys.exit()
     
+    
     current_cell.visited = True
     current_cell.current = True
     
@@ -303,6 +304,7 @@ button2 = ButtonReset(size[0] - 70, size[1] - 70, button2_img)
 #------------------------------------------------------------------------------------------
 
 
+    
 
 
 
@@ -480,6 +482,8 @@ while not gameQuit:
             dir = 4
             fl_set = []
             flowercoords()
+            grid = []
+            stack = []
             for y in range(rows):
                 grid.append([])
                 for x in range(cols):
@@ -487,12 +491,53 @@ while not gameQuit:
             current_cell = grid[0][0]
             next_cell = 0
             done = False
+            cols = maze_dim[0]
+            rows = maze_dim[1]
+            while not done:
+                current_cell.visited = True
+                current_cell.current = True
+    
+                for y in range(rows):
+                    for x in range(cols):
+                        grid[y][x].draw()
+    
+                next_cell = current_cell.checkNeighbors()
+    
+                if next_cell != False:
+                    current_cell.neighbors = []
+        
+                    stack.append(current_cell)
+        
+                    removeWalls(current_cell,next_cell)
+        
+                    current_cell.current = False
+        
+                    current_cell = next_cell
+    
+                elif len(stack) > 0:
+                    current_cell.current = False
+                    current_cell = stack.pop()
+        
+                elif len(stack) == 0:
+                    #print("FULL")
+                    done = True
+        
+                    for y in range(rows):
+                        grid.append([])
+                        for x in range(cols):
+                            grid[y].append(Cell(x,y))
+        
+                    current_cell = grid[0][0]
+                    next_cell = 0
+
+            
+            
            
             
             
             
-            
 
+        #-------------------------------------------------------
 
         #print("YOU WON! Final step count: " + str(move_count))
         #exit()
