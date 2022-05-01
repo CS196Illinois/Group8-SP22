@@ -3,6 +3,7 @@ import random
 import pygame
 import sys
 import math
+from pygame.locals import *
 pygame.init()
 
 #import sprites
@@ -21,6 +22,8 @@ mc_sprite_right = pygame.image.load("Research/sprites/mc sprite right.png")
 mc_set = [mc_sprite_up, mc_sprite_down, mc_sprite_left, mc_sprite_right]
 
 fl_sprite = pygame.image.load("Research/sprites/flower sprite.png")
+button_img = pygame.image.load('Research/sprites/reset.png')
+button2_img = pygame.image.load('Research/sprites/fast-forward.png')
 
 #starting position sprite facing down
 dir = 4
@@ -62,6 +65,8 @@ rows = maze_dim[1]
 fl_num = 4
 fl_set = []
 
+#Start score for flowers picked up
+flowers = 0
 # generate flower coordinates
 
 while len(fl_set) < fl_num:
@@ -217,8 +222,89 @@ while not done:
 
     pygame.display.flip()
 
-#-------------------------------------------------------------------------------------
 
+
+# --------------------------------Score Implementation----------------------------------------------------------------------------
+
+#Colors for use
+white = (255, 255, 255)
+green = (0, 255, 0)
+blue = (0, 0, 128)
+ 
+# Assign location
+scoreX = 3
+scoreY = 3
+ 
+# create the display surface object
+# of specific dimension..e(X, Y).
+#use the variable screen
+ 
+ 
+# create a font object.
+# Remeber: 1st parameter is the font file
+# which is present in pygame.
+# 2nd parameter is size of the font
+font = pygame.font.Font('freesansbold.ttf', 12)
+
+
+def show_score(newX, newY):
+    score = font.render("Score: " + str(flowers), True, blue)
+    screen.blit(score, (newX, newY))
+
+ 
+#-------------------------------------Retry Button------------------------------------------------
+
+#----------Reset level ---------------------
+#Making a class
+class Button():
+    def __init__(self, x, y, image):
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
+
+    #drawing it
+    def draw(self):
+        
+        #get mouse position
+        pos = pygame.mouse.get_pos()
+        action = False
+        #check if mouse is over the button
+        if self.rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1:
+                action = True
+        #draw button
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+        return action
+
+#create restart button instance
+button = Button(155 , 150 , button_img)
+
+#--------------New Level-----------
+class ButtonReset():
+    def __init__(self, x, y, image):
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
+    
+    #draw it
+    def draw2(self):
+
+        pos = pygame.mouse.get_pos()
+        action = False
+        if self.rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1:
+                action = True
+        
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+        return action
+
+button2 = ButtonReset(300 , 300 , button2_img)
+
+
+
+
+
+#---------------------------------------------------------------------------------------
 pygame.display.set_caption('Maze Game')
 
 gameQuit = False
@@ -237,6 +323,12 @@ move_y = 5
 
 location = (move_x, move_y)
     
+
+
+
+
+
+#----------------------------------------------------------------------------------------
 # game loop
 
 while not gameQuit:
@@ -327,15 +419,19 @@ while not gameQuit:
     if fl_set[0][0] - move_x == 10 and fl_set[0][1] - move_y == 10 and getOne == False:
         print("GOT 1/4!")
         getOne = True
+        flowers = flowers + 1
     if fl_set[1][0] - move_x == 10 and fl_set[1][1] - move_y == 10 and getTwo == False:
         print("GOT 2/4!")
         getTwo = True
+        flowers += 1
     if fl_set[2][0] - move_x == 10 and fl_set[2][1] - move_y == 10 and getThree == False:
         print("GOT 3/4!")
         getThree = True
+        flowers += 1
     if fl_set[3][0] - move_x == 10 and fl_set[3][1] - move_y == 10 and getFour == False:
         print("GOT 4/4!")
         getFour = True
+        flowers += 1
 
     # If flowers were not picked up, draw the flowers
     if getOne == False:
@@ -347,9 +443,48 @@ while not gameQuit:
     if getFour == False:
         screen.blit(fl_sprite, fl_set[3])
 
+
     if getOne == True and getTwo == True and getThree == True and getFour == True and gameWon == False:
         gameWon == True
+        button.draw()
+        button2.draw2()
+        if button.draw() == True:
+            print("Retry Level")
+            gameWon ==  False
+            flowers = 0
+            getOne = False
+            getTwo = False
+            getThree = False
+            getFour = False
+            move_count = 0
+            move_x = 5
+            move_y = 5
+            dir = 4
+        if button2.draw2() == True:
+            print("New Level")
+            gameWon == False
+            flowers = 0
+            getOne = False
+            getTwo = False
+            getThree = False
+            getFour = False
+            move_count = 0
+            move_x = 5
+            move_y = 5
+            dir = 4
+            done = False
+            #fl_set.clear()
+            #instance_of_Cell = Cell()
+            #instance_of_Cell()
+
+
+
         print("YOU WON! Final step count: " + str(move_count))
-        exit()
-        
+        #exit()
+
+
+    #Score display
+    show_score(scoreX, scoreY)
+
     pygame.display.flip()           
+
