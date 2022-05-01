@@ -39,7 +39,7 @@ light = (9, 134, 148)
 
 # maze properties
 
-maze_dim = (8, 8)
+maze_dim = (7, 7)
 cell = 50
 width = 50
 size = (maze_dim[0] * cell, maze_dim[1] * cell)
@@ -54,8 +54,8 @@ done = False
 
 #clock = pygame.time.Clock()
 
-cols = int(size[0] / width)
-rows = int(size[1] / width)
+cols = maze_dim[0]
+rows = maze_dim[1]
 
 # initiate set of flowers
 
@@ -66,9 +66,11 @@ fl_set = []
 
 while len(fl_set) < fl_num:
     # add first flower
-    coord_fl = ((50 * random.randint(0, rows)) + 15, (50 * random.randint(0, cols)) + 15)
+    coord_fl = ((50 * random.randint(0, rows - 1)) + 15, (50 * random.randint(0, cols - 1)) + 15)
     if coord_fl not in fl_set and coord_fl != (15, 15):
         fl_set.append(coord_fl)
+
+print(fl_set)
 
 stack = []
 
@@ -177,8 +179,6 @@ while not done:
             pygame.quit()
             sys.exit()
     
-    # screen.fill(GREY)
-    
     current_cell.visited = True
     current_cell.current = True
     
@@ -259,29 +259,21 @@ while not gameQuit:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT: #tests if theres a wall to the left of the rect
                 dir = 1
-                #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])  
-                #if (move_x >= 2 and move_x <= size[1] - cell): 
                 if grid[loc_mc[1]][loc_mc[0]].walls[3] == False:
                     move_x -= 50
                     move_count += 1
             if event.key == pygame.K_RIGHT:
                 dir = 2
-                #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41]) 
-                #if (move_x >= 2 and move_x <= size[1] - cell):
                 if grid[loc_mc[1]][loc_mc[0]].walls[1] == False:
                     move_x += 50
                     move_count += 1
             if event.key == pygame.K_UP:
                 dir = 3
-                #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
-                #if (move_y >= 2 and move_y <= size[1] - cell):
                 if grid[loc_mc[1]][loc_mc[0]].walls[0] == False:
                     move_y -= 50
                     move_count += 1
             if event.key == pygame.K_DOWN:
                 dir = 4
-                #pygame.draw.rect(screen, colorWHITE, [move_x, move_y, 41, 41])
-                #if (move_y >= 2 and move_y <= size[1] - cell):
                 if grid[loc_mc[1]][loc_mc[0]].walls[2] == False:
                     move_y += 50
                     move_count += 1
